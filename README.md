@@ -4,7 +4,7 @@ An easy to use Google Apps Script that automatically deletes emails nightly. Opt
 **How to Deploy:**
 - Copy and paste the code into the an new .gs file on https://script.google.com/.
 - Install the Gmail API servce. Insure the Identifier is 'Gmail'.
-- Set your options
+- Set your options with the scripts constants (explained below)
 - Start the 'startup' function. 
 - Done!
 
