@@ -7,6 +7,7 @@ With drive capacity now being a thing for Google services this seems really usef
 
 When reviewing the code the trigger creation and deletion method may seem odd, but Google seems to be limiting how triggers can be run and how many can be run consecutively. If to many triggers are run one after another then it will just cancel all triggers for the project--even a nightly. The method employed here ensures that reguardless of what shenanigans Google is using on the server side to stop triggers this code will always rerun nightly. 
 
+
 **How to Deploy:**
 - Copy and paste the code into the an new .gs file on https://script.google.com/.
 - Install the Gmail API servce. Insure the Identifier is 'Gmail'.
