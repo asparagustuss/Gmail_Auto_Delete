@@ -5,7 +5,7 @@ An easy to use Google Apps Script that automatically deletes emails nightly. Opt
 
 With drive capacity now being a thing for Google services this seems really useful to me. The script works by deleting in blocks of 200 up 1000 per tiggered instance. After 1000 emails have been deleted if there are more remaining it will start another trigger in 60 seconds. If no emails are left to delete then the nightly trigger is created. It looks like about 3000-4000 emails is the most that can be deleted in a day. Based on how many excess emails you have this could take a week or more.
 
-When reviewing the code the trigger creation and deletion method may seem odd, but Google seems to be limiting how triggers can be run and how many can be run consecutively. If to many triggers are run one after another then it will just cancel all triggers for the project--even a nightly. The method employed here ensures that reguardless of what shenanigans Google is using on the server side to stop triggers this code will always rerun nightly. 
+When reviewing the code the trigger creation and deletion method may seem odd, but Google seems to be limiting how triggers can be run and how many can be run consecutively. If too many triggers are run one after another then it will just cancel all triggers for the project--even a nightly. The method employed here ensures that reguardless of what shenanigans Google is using on the server side to stop triggers this code will always rerun nightly. 
 
 
 **How to Deploy:**
