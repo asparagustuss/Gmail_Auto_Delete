@@ -7,7 +7,8 @@ An easy to use Google Apps Script that automatically deletes emails nightly. Opt
 - Set your options
 - Start the 'startup' function. 
 - Done!
-*if you want to test the deletion results before deploying setup your options and run the 'generate_search' function. Copy the log search output and paste into Gmail. The results shown here are the exact results that will be used by the script for deletion.
+
+**if you want to test the deletion results before deploying setup your options and run the 'generate_search' function. Copy the log search output and paste into Gmail. The results shown here are the exact results that will be used by the script for deletion.*
 
 **Options Explained:**
 - DELETE_AFTER_DAYS: Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
