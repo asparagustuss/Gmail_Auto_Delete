@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //==================OPTIONS==================//
 // Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
 var DELETE_AFTER_DAYS = 365;
+// Only delete emails that are at least X MB (0 includes EVERYTHING/All emails reguardless of size)
+var MESSAGE_MB_MINIMUM = 1;
 // If true, any email with an assigned Yellow Star is NOT deleted.
 var SKIP_ASSIGNED_YELLOW_STAR = true;
 // If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you. 
@@ -29,7 +31,16 @@ var SKIP_ASSIGNED_USER_MADE_LABELS = true;
 var SKIP_FROM_LIST = [
   "email_1@gmail.com",
   "email_2@gmail.com",
-  "email_3@gmail.com",
+  "@something.com",
+];
+var SKIP_CATEGORY_LIST = [
+  //"primary",
+  //"social",
+  //"promotions",
+  //"updates",
+  //"forums",
+  //"reservations",
+  //"purchases"
 ];
 //================================================
 
@@ -97,33 +108,21 @@ function executeFilterDelete(ev) {
 
 //Generate gmail search statement. Log can be used to test in gmail search bar directly.
 function generate_Search(){ 
-  var labelLists = Gmail.Users.Labels.list('me');
   var olderThanClause = "";
+  var sizeClause = "";
   var yellowStarClause = "";
   var importantClause = "";
   var userLabelClause = "";
   var skipFromClause = "";
+  var skipCategoryClause = "";
   if(DELETE_AFTER_DAYS >0){olderThanClause = "older_than:" + DELETE_AFTER_DAYS + "d"}
+  if(MESSAGE_MB_MINIMUM>0){sizeClause = " larger:" + MESSAGE_MB_MINIMUM + "M"}
   if(SKIP_ASSIGNED_YELLOW_STAR == true){yellowStarClause =" -has:yellow-star"}
   if(SKIP_ASSIGNED_IMPORTANT == true){importantClause= " -is:important"}
-  if(SKIP_ASSIGNED_USER_MADE_LABELS == true){
-    //populate userLabels
-    
-    if (labelLists.labels.length == 0) {
-      Logger.log('No labels found.');
-    } else {
-      //Logger.log('Labels:');
-      for (var i = 0; i < labelLists.labels.length; i++) {
-        var label = labelLists.labels[i];
-        if(label.type == 'user'){
-          //Logger.log('LabelName: %s | LabelType: %s', label.name, label.type);
-          userLabelClause =  userLabelClause + " -label:\"" + label.name + "\"";
-        }
-      }
-    }
-  }
-  if(SKIP_FROM_LIST != null){skipFromClause = " from:(-" + SKIP_FROM_LIST.join(",-") + ")"}
-  var search = olderThanClause + yellowStarClause + importantClause + userLabelClause + skipFromClause;
+  if(SKIP_ASSIGNED_USER_MADE_LABELS == true){userLabelClause = " has:nouserlabels"}
+  if(SKIP_FROM_LIST.length > 0){skipFromClause = " from:(-" + SKIP_FROM_LIST.join(",-") + ")"}
+  if(SKIP_CATEGORY_LIST.length > 0){skipCategoryClause = " category:(-" + SKIP_CATEGORY_LIST.join(",-") + ")"}
+  var search = olderThanClause + sizeClause + yellowStarClause + importantClause + userLabelClause + skipFromClause + skipCategoryClause;
   search = search.trim();
   console.log("Search Term: " + search);
   //var threads = GmailApp.search(search, 0, PAGE_SIZE);
