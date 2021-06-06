@@ -49,7 +49,7 @@ var SKIP_SNOOZED = false;
 // If true, any email that is unread will NOT deleted.
 var SKIP_UNREAD = false;
 // If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you. 
-var SKIP_IMPORTANT = true;
+var SKIP_IMPORTANT = false;
 // If true, any email with a user made custom label is NOT deleted.
 var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
