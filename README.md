@@ -10,7 +10,6 @@ When reviewing the code the trigger creation and deletion method may seem odd, b
 
 **How to Deploy:**
 - Copy and paste the code into the an new .gs file on https://script.google.com/.
-- Install the Gmail API servce. Insure the Identifier is 'Gmail'.
 - Set your options with the scripts constants (explained below)
 - Start the 'startup' function. 
 - Done!
@@ -19,7 +18,13 @@ When reviewing the code the trigger creation and deletion method may seem odd, b
 
 **Options Explained:**
 - DELETE_AFTER_DAYS: Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
-- SKIP_ASSIGNED_YELLOW_STAR: If true, any email with an assigned Yellow Star is NOT deleted.
-- SKIP_ASSIGNED_IMPORTANT: If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you (defualt is False).
-- SKIP_ASSIGNED_USER_MADE_LABELS: If true, any email with a user made custom label is NOT deleted. You dont need to identify them. The script looks up all labels and skips any label that was created by the user.
+- MESSAGE_MB_MINIMUM: Only delete emails that are at least X MB (0 includes EVERYTHING/All emails reguardless of size)
+- HAS_ATTACHMENT: If true, only email with an attachement will be deleted.
+- CONTAINS_FILE_TYPES: Only emails containg the listed file types will be deleted.
+- SKIP_STARRED: If true, any email that is been starred will NOT deleted.
+- SKIP_SNOOZED: If true, any email that is snoozed will NOT deleted.
+- SKIP_UNREAD: If true, any email that is unread will NOT deleted.
+- SKIP_IMPORTANT: If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you (defualt is False).
+- SKIP_USER_MADE_LABELS: If true, any email with a user made custom label is NOT deleted. You dont need to identify them. The script looks up all labels and skips any label that was created by the user.
 - SKIP_FROM_LIST: Emails received from these specific addresses will never be deleted reguardless of any settings above
+- SKIP_CATEGORY_LIST: Emails received from these specific categories will never be deleted reguardless of any settings above
