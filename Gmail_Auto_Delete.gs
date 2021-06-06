@@ -15,24 +15,50 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//Requires Gmail Service installed to project
+
+//=================Disclaimer================//
+//This scrip permenatly deletes emails. They will be lost forever. 
+//Please review your settings and test them by copying the 
+//log output from the 'generate search' function and testing in Gmail directly. 
+//That said, I have had no issues.
+//As stated in the license, use at your own risk.
 //==================OPTIONS==================//
+//---Any combination below can be combined---//
 // Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
 var DELETE_AFTER_DAYS = 365;
 // Only delete emails that are at least X MB (0 includes EVERYTHING/All emails reguardless of size)
 var MESSAGE_MB_MINIMUM = 1;
-// If true, any email with an assigned Yellow Star is NOT deleted.
-var SKIP_ASSIGNED_YELLOW_STAR = true;
+// If true, only email with an attachement will be deleted.
+var HAS_ATTACHMENT = false
+// Only emails containg the listed file types will be deleted.
+var CONTAINS_FILE_TYPES = [
+  //"pdf",
+  //"txt",
+  //"zip",
+  //"avi",
+  //"mpeg",
+  //"mp4",
+  //"mp3",
+  //"jpeg",
+  //"jpg"
+];
+// If true, any email that is been starred will NOT deleted.
+var SKIP_STARRED = true;
+// If true, any email that is snoozed will NOT deleted.
+var SKIP_SNOOZED = false;
+// If true, any email that is unread will NOT deleted.
+var SKIP_UNREAD = false;
 // If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you. 
-var SKIP_ASSIGNED_IMPORTANT = false;
+var SKIP_IMPORTANT = true;
 // If true, any email with a user made custom label is NOT deleted.
-var SKIP_ASSIGNED_USER_MADE_LABELS = true;
+var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
 var SKIP_FROM_LIST = [
   "email_1@gmail.com",
   "email_2@gmail.com",
   "@something.com",
 ];
+// Emails received from these specific categories will never be deleted reguardless of any settings above
 var SKIP_CATEGORY_LIST = [
   //"primary",
   //"social",
@@ -110,19 +136,27 @@ function executeFilterDelete(ev) {
 function generate_Search(){ 
   var olderThanClause = "";
   var sizeClause = "";
-  var yellowStarClause = "";
-  var importantClause = "";
-  var userLabelClause = "";
+  var hasAttachmentClause = "";
+  var containsFileTypesClause = "";
+  var skipStarClause = "";
+  var skipSnoozedClause = "";
+  var skipUnreadClause = "";
+  var skipimportantClause = "";
+  var skipuserLabelClause = "";
   var skipFromClause = "";
   var skipCategoryClause = "";
   if(DELETE_AFTER_DAYS >0){olderThanClause = "older_than:" + DELETE_AFTER_DAYS + "d"}
   if(MESSAGE_MB_MINIMUM>0){sizeClause = " larger:" + MESSAGE_MB_MINIMUM + "M"}
-  if(SKIP_ASSIGNED_YELLOW_STAR == true){yellowStarClause =" -has:yellow-star"}
-  if(SKIP_ASSIGNED_IMPORTANT == true){importantClause= " -is:important"}
-  if(SKIP_ASSIGNED_USER_MADE_LABELS == true){userLabelClause = " has:nouserlabels"}
+  if(HAS_ATTACHMENT == true){hasAttachmentClause = " has:attachment"}
+  if(CONTAINS_FILE_TYPES.length > 0){containsFileTypesClause = " filename:(" + CONTAINS_FILE_TYPES.join(",-") + ")"}
+  if(SKIP_STARRED == true){skipStarClause =" -is:starred"}
+  if(SKIP_SNOOZED == true){skipSnoozedClause = " -is:snoozed"}
+  if(SKIP_UNREAD == true) {skipUnreadClause = " -is:unread"}
+  if(SKIP_IMPORTANT == true){skipimportantClause= " -is:important"}
+  if(SKIP_USER_MADE_LABELS == true){skipuserLabelClause = " has:nouserlabels"}
   if(SKIP_FROM_LIST.length > 0){skipFromClause = " from:(-" + SKIP_FROM_LIST.join(",-") + ")"}
   if(SKIP_CATEGORY_LIST.length > 0){skipCategoryClause = " category:(-" + SKIP_CATEGORY_LIST.join(",-") + ")"}
-  var search = olderThanClause + sizeClause + yellowStarClause + importantClause + userLabelClause + skipFromClause + skipCategoryClause;
+  var search = olderThanClause + sizeClause + hasAttachmentClause + containsFileTypesClause + skipStarClause + skipSnoozedClause + skipUnreadClause + skipimportantClause + skipuserLabelClause + skipFromClause + skipCategoryClause;
   search = search.trim();
   console.log("Search Term: " + search);
   //var threads = GmailApp.search(search, 0, PAGE_SIZE);
