@@ -14,7 +14,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+//=================Disclaimer================//
+//This scrip permenatly deletes emails. They will be lost forever. 
+//Please review your settings and test them by copying the 
+//log output from the 'generate search' function and testing in Gmail directly. 
+//That said, I have had no issues.
+//As stated in the license, use at your own risk.
 //==================OPTIONS==================//
 //---Any combination below can be combined---//
 // Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
