@@ -110,8 +110,8 @@ function executeFilterDelete() {
         } else {console.log("Error Date: " + thread.getLastMessageDate())}
       }
       totalThreads = totalThreads + threads.length
-      console.log("Processing " + threads.length + " more emails. Total Emails Deleted:" + totalThreads);
       threads = GmailApp.search(search, 0, PAGE_SIZE);
+      console.log("Processing " + threads.length + " more emails. Total Emails Deleted:" + totalThreads);
       if (totalThreads >= 1000) {   //1200-1400 exceeds 4-5mins and script will be force ended by server
         break
       }
