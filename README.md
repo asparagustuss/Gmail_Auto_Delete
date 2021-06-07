@@ -1,5 +1,5 @@
 # Gmail_Auto_Delete
-An easy to use Google Apps Script that automatically deletes emails nightly. Options include: Age, Yellow Star, Important, User Labels, and Sent From.
+Google Apps Script that auto deletes emails nightly based on options: Age, Size, Attachments, Starred, Important, User Labels, Cats, From, Unread, Snoozed, etc..
 
 **About:**
 
