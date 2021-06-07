@@ -15,13 +15,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-//=================Disclaimer================//
-//This scrip permenatly deletes emails. They will be lost forever. 
-//Please review your settings and test them by copying the 
-//log output from the 'generate search' function and testing in Gmail directly. 
-//That said, I have had no issues.
-//As stated in the license, use at your own risk.
 //==================OPTIONS==================//
 //---Any combination below can be combined---//
 // Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
@@ -54,9 +47,17 @@ var SKIP_IMPORTANT = false;
 var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
 var SKIP_FROM_LIST = [
-  "email_1@gmail.com",
-  "email_2@gmail.com",
-  "@something.com",
+  "jcam426@gmail.com",
+  "hapygoluky25@gmail.com",
+  "evelynstumpf@yahoo.com",
+  "knstum@aol.com",
+  "ken@stumpf.town",
+  "ken@stumpf.com",
+  "sean.l.stumpf@uscg.mil",
+  "seanstumpf@gmail.com",
+  "kdoske@gmail.com",
+  "@kcmo.org",
+  "@payitgov.com"
 ];
 // Emails received from these specific categories will never be deleted reguardless of any settings above
 var SKIP_CATEGORY_LIST = [
@@ -90,7 +91,7 @@ function deleteAllTriggers() {
   }
 }
 
-function executeFilterDelete(ev) {
+function executeFilterDelete() {
   deleteAllTriggers()
   ScriptApp.newTrigger("executeFilterDelete").timeBased().everyDays(1).create(); // nightly created now incase of unmoniotored error. Having multiple time triggers seems to create issues.
   var errorFlag = 0;
@@ -133,7 +134,7 @@ function executeFilterDelete(ev) {
 }
 
 //Generate gmail search statement. Log can be used to test in gmail search bar directly.
-function generate_Search(){ 
+function generate_search(){ 
   var olderThanClause = "";
   var sizeClause = "";
   var hasAttachmentClause = "";
