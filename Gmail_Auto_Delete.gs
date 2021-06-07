@@ -47,17 +47,11 @@ var SKIP_IMPORTANT = false;
 var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
 var SKIP_FROM_LIST = [
-  "jcam426@gmail.com",
-  "hapygoluky25@gmail.com",
-  "evelynstumpf@yahoo.com",
-  "knstum@aol.com",
-  "ken@stumpf.town",
-  "ken@stumpf.com",
-  "sean.l.stumpf@uscg.mil",
-  "seanstumpf@gmail.com",
-  "kdoske@gmail.com",
-  "@kcmo.org",
-  "@payitgov.com"
+var SKIP_FROM_LIST = [
+  "email_1@gmail.com",
+  "email_2@gmail.com",
+  "@something.com",
+];
 ];
 // Emails received from these specific categories will never be deleted reguardless of any settings above
 var SKIP_CATEGORY_LIST = [
