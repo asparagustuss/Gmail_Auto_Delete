@@ -52,11 +52,9 @@ var SKIP_IMPORTANT = false;
 var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
 var SKIP_FROM_LIST = [
-var SKIP_FROM_LIST = [
   "email_1@gmail.com",
   "email_2@gmail.com",
   "@something.com",
-];
 ];
 // Emails received from these specific categories will never be deleted reguardless of any settings above
 var SKIP_CATEGORY_LIST = [
@@ -106,7 +104,7 @@ function executeFilterDelete() {
         if (threads[a].getLastMessageDate() < olderThanDate) {
           threads[a].moveToTrash();
         } else {
-          var messages = GmailApp.getMessagesForThread(threads[i]);
+          var messages = GmailApp.getMessagesForThread(threads[a]);
           for (var j=0; b < messages.length; b++) {      
             if (messages[b].getDate() < DELETE_AFTER_DAYS) {
               messages[b].moveToTrash();
