@@ -95,25 +95,30 @@ function executeFilterDelete() {
   ScriptApp.newTrigger("executeFilterDelete").timeBased().everyDays(1).create(); // nightly created now incase of unmoniotored error. Having multiple time triggers seems to create issues.
   var errorFlag = 0;
   var olderThanDate = new Date();  
-  olderThanDate.setDate(olderThanDate.getDate() - DELETE_AFTER_DAYS);    
+  olderThanDate.setDate(olderThanDate.getDate() - DELETE_AFTER_DAYS +1);    
   var search = generate_search()
   try {
-    var totalThreads = 0
+    var totalProcessedThreads = 0
     var threads = GmailApp.search(search, 0, PAGE_SIZE);
     console.log("Processing " + threads.length + " emails.");
     while(threads.length > 0){
-      for (var i=0; i<threads.length; i++) {
-        var thread = threads[i];
-        //confirm its old enough just incase gmail filter is being wierd.
-        if (thread.getLastMessageDate() <= olderThanDate) {
-          thread.moveToTrash();
-        } else {console.log("Error Date: " + thread.getLastMessageDate())}
+      for (var a=0; a < threads.length; a++) {
+        if (threads[a].getLastMessageDate() < olderThanDate) {
+          threads[a].moveToTrash();
+        } else {
+          var messages = GmailApp.getMessagesForThread(threads[i]);
+          for (var j=0; b < messages.length; b++) {      
+            if (messages[b].getDate() < DELETE_AFTER_DAYS) {
+              messages[b].moveToTrash();
+            }
+          }
+        }
       }
-      totalThreads = totalThreads + threads.length
+      totalProcessedThreads = totalProcessedThreads + threads.length
       threads = GmailApp.search(search, 0, PAGE_SIZE);
-      console.log("Processing " + threads.length + " more emails. Total Emails Deleted:" + totalThreads);
-      if (totalThreads >= 1000) {   //1200-1400 exceeds 4-5mins and script will be force ended by server
-        break
+      console.log("Processing " + threads.length + " more emails. Total Emails Deleted:" + totalProcessedThreads);
+      if (totalProcessedThreads >= 1000) {   //1200-1400 exceeds 4-5mins and script will be force ended by server
+        break;
       }
     }
     console.log("done")
@@ -121,7 +126,7 @@ function executeFilterDelete() {
       console.log("error!:" + e);
       errorFlag = 1;
     }
-    //if more to delete exist and no errors have been flagged delete nightly and create a new one shot trigger in 60 seconds
+    //if more to delete exist and no errors have been flagged, delete nightly and create a new one shot trigger in 60 seconds
   threads = GmailApp.search(search, 0, PAGE_SIZE);
   if (threads.length > 0 & errorFlag == 0){
     deleteAllTriggers()
@@ -159,7 +164,7 @@ function generate_search(){
   var search = olderThanClause + sizeClause + hasAttachmentClause + containsFileTypesClause + skipStarClause + skipSnoozedClause + skipUnreadClause + skipimportantClause + skipuserLabelClause + skipFromClause + skipCategoryClause;
   search = search.trim();
   console.log("Search Term: " + search);
-  //var threads = GmailApp.search(search, 0, PAGE_SIZE);
-  //console.log("Total Results Found: " + threads.length);
+  // var threads = GmailApp.search(search, 0, PAGE_SIZE);
+  // console.log("Total Results Found: " + threads.length);
   return search
 }
