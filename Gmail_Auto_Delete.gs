@@ -25,7 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // Only delete emails older than X days (0 includes EVERYTHING/All emails reguardless of when received)
 var DELETE_AFTER_DAYS = 365;
 // Only delete emails that are at least X MB (0 includes EVERYTHING/All emails reguardless of size)
-var MESSAGE_MB_MINIMUM = 1;
+var MESSAGE_MB_MINIMUM = 0;
 // If true, only email with an attachement will be deleted.
 var HAS_ATTACHMENT = false
 // Only emails containg the listed file types will be deleted.
@@ -40,21 +40,31 @@ var CONTAINS_FILE_TYPES = [
   //"jpeg",
   //"jpg"
 ];
-// If true, any email that is been starred will NOT deleted.
+// If true, any email that is been starred will NOT be deleted.
 var SKIP_STARRED = true;
-// If true, any email that is snoozed will NOT deleted.
+// If true, any email that is snoozed will NOT be deleted.
 var SKIP_SNOOZED = false;
-// If true, any email that is unread will NOT deleted.
+// If true, any email that is unread will NOT be deleted.
 var SKIP_UNREAD = false;
+// If true, all items in sent folder are NOT deleted.
+var SKIP_SENT = true;
 // If true, any email assigned Important is NOT deleted. *Important emails are auto flagged by a gmail algorithm. Chances are these emails are not in fact important to you. 
 var SKIP_IMPORTANT = false;
 // If true, any email with a user made custom label is NOT deleted.
 var SKIP_USER_MADE_LABELS = true;
 // Emails received from these specific addresses will never be deleted reguardless of any settings above
 var SKIP_FROM_LIST = [
-  "email_1@gmail.com",
-  "email_2@gmail.com",
-  "@something.com",
+  "jcam426@gmail.com",
+  "hapygoluky25@gmail.com",
+  "evelynstumpf@yahoo.com",
+  "knstum@aol.com",
+  "ken@stumpf.town",
+  "ken@stumpf.com",
+  "sean.l.stumpf@uscg.mil",
+  "seanstumpf@gmail.com",
+  "kdoske@gmail.com",
+  "@kcmo.org",
+  "@payitgov.com"
 ];
 // Emails received from these specific categories will never be deleted reguardless of any settings above
 var SKIP_CATEGORY_LIST = [
@@ -68,7 +78,7 @@ var SKIP_CATEGORY_LIST = [
 ];
 //================================================
 
-// This does not need to be changed! Number of search returns (threads), Max 500 per search any higher will break script. 
+// This does not need to be changed! Number of search returns (threads), Max 500 per search, any higher will break script. 
 var PAGE_SIZE = 200;
 
 //load script
@@ -148,6 +158,7 @@ function generate_search(){
   var skipuserLabelClause = "";
   var skipFromClause = "";
   var skipCategoryClause = "";
+  var skipSentClause = "";
   if(DELETE_AFTER_DAYS >0){olderThanClause = "older_than:" + DELETE_AFTER_DAYS + "d"}
   if(MESSAGE_MB_MINIMUM>0){sizeClause = " larger:" + MESSAGE_MB_MINIMUM + "M"}
   if(HAS_ATTACHMENT == true){hasAttachmentClause = " has:attachment"}
@@ -155,11 +166,12 @@ function generate_search(){
   if(SKIP_STARRED == true){skipStarClause =" -is:starred"}
   if(SKIP_SNOOZED == true){skipSnoozedClause = " -is:snoozed"}
   if(SKIP_UNREAD == true) {skipUnreadClause = " -is:unread"}
+  if(SKIP_SENT == true) {skipSentClause = " -is:sent"}
   if(SKIP_IMPORTANT == true){skipimportantClause= " -is:important"}
   if(SKIP_USER_MADE_LABELS == true){skipuserLabelClause = " has:nouserlabels"}
   if(SKIP_FROM_LIST.length > 0){skipFromClause = " from:(-" + SKIP_FROM_LIST.join(",-") + ")"}
   if(SKIP_CATEGORY_LIST.length > 0){skipCategoryClause = " category:(-" + SKIP_CATEGORY_LIST.join(",-") + ")"}
-  var search = olderThanClause + sizeClause + hasAttachmentClause + containsFileTypesClause + skipStarClause + skipSnoozedClause + skipUnreadClause + skipimportantClause + skipuserLabelClause + skipFromClause + skipCategoryClause;
+  var search = olderThanClause + sizeClause + hasAttachmentClause + containsFileTypesClause + skipStarClause + skipSnoozedClause + skipUnreadClause + skipSentClause + skipimportantClause + skipuserLabelClause + skipFromClause + skipCategoryClause;
   search = search.trim();
   console.log("Search Term: " + search);
   // var threads = GmailApp.search(search, 0, PAGE_SIZE);
